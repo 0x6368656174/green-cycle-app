@@ -1,20 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthCodePageComponent } from './auth-code-page/auth-code-page.component';
+import { AuthPageComponent } from './auth-page/auth-page.component';
+import { HomePageComponent } from './home-page/home-page.component';
+import { RentalPointInfoPageComponent } from './rental-point-info-page/rental-point-info-page.component';
 
 const routes: Routes = [
-  {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
-  },
-  {
-    path: 'home',
-    loadChildren: './home/home.module#HomePageModule'
-  },
-  {
-    path: 'list',
-    loadChildren: './list/list.module#ListPageModule'
-  }
+  { path: '', component: HomePageComponent, },
+  { path: 'auth', component: AuthPageComponent, },
+  { path: 'auth-code/:id', component: AuthCodePageComponent, },
+  { path: 'rental-point/:id', component: RentalPointInfoPageComponent, },
+  { path: '**', redirectTo: ''},
 ];
 
 @NgModule({

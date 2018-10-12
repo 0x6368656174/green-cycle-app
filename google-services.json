@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "7069445100",
+    "firebase_url": "https://green-cycle.firebaseio.com",
+    "project_id": "green-cycle",
+    "storage_bucket": "green-cycle.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:7069445100:android:9e0fe32fb5842791",
+        "android_client_info": {
+          "package_name": "ru.itquasar.green_cycle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "7069445100-657lafuviu9c3h3g6feiln7a0ku48j4l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSR_kwGPwHpx7yBGtMZaUBWnqZwVXITks"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
