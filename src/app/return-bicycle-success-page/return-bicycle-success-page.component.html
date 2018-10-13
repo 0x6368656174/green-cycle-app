@@ -1,0 +1,29 @@
+<ion-content>
+  <div class="content">
+    <div class="title">Спасибо за поездку!</div>
+
+    <div class="text">Мы вернем залог в течении 10 минут</div>
+
+    <app-trip-information class="info" [duration]="duration" [mileage]="mileage" [border]="false"></app-trip-information>
+
+    <div class="bottom">
+      <div class="amount-row">
+        <div class="amount-label">
+          <img class="amount-image" src="../../assets/card.svg" alt="Банковская карта">
+          Сумма
+        </div>
+
+        <div class="amount-value">
+          {{amount?.toFixed(0)}} рублей
+        </div>
+      </div>
+
+      <div class="button-container">
+        <ion-button class="button" expand="full" (click)="toHome()">Понятно</ion-button>
+      </div>
+
+      <a class="link">Сообщить о проблеме</a>
+    </div>
+  </div>
+</ion-content>
+

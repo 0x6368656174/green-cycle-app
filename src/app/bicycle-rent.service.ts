@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import * as moment from 'moment';
-import { interval } from 'rxjs';
+import { interval, Observable, Subject } from 'rxjs';
 import { first, map, takeWhile } from 'rxjs/operators';
 import { IActiveBicycle, IRentalPoint } from './db';
 import { ModalController } from '@ionic/angular';
@@ -11,12 +11,16 @@ import { GetBicyclePageComponent } from './get-bicycle-page/get-bicycle-page.com
 import '@firebase/firestore';
 import * as firebase from 'firebase/app';
 import { GetBicycleSuccessPageComponent } from './get-bicycle-success-page/get-bicycle-success-page.component';
+import { calculateAmount } from './price';
+import { ReturnBicycleSuccessPageComponent } from './return-bicycle-success-page/return-bicycle-success-page.component';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BicycleRentService {
   private maxInterval = 5;
+
+  newRentalPointId = new Subject<string>();
 
   constructor(
               private modalController: ModalController,
@@ -25,13 +29,13 @@ export class BicycleRentService {
               private geolocation: GeolocationService,
   ) {
     const windowAny: any = window;
-    console.log(windowAny);
+    console.log(windowAny.nfc);
     if (windowAny.nfc) {
       windowAny.nfc.addNdefListener(async data => {
         const payload = data.tag.ndefMessage[0].payload;
         const rentalPointId = windowAny.nfc.bytesToString(payload).substring(3);
-        console.log('tag data', rentalPointId);
 
+        this.newRentalPointId.next(rentalPointId);
         await this.onRentalPointFound(rentalPointId);
       });
     }
@@ -49,8 +53,6 @@ export class BicycleRentService {
     const clientRef = await this.auth.clientRef.pipe(first()).toPromise();
     const location = await this.geolocation.geolocation.pipe(first()).toPromise();
 
-    console.log(clientRef, location);
-
     // Попробуем найти уже активный велосипед
     const activeBicycle = await this.firestore.collection<IActiveBicycle>(
       'activeBicycles',
@@ -61,6 +63,7 @@ export class BicycleRentService {
         map(changes => {
           if (changes.length > 0) {
             return {
+              ...changes[0].payload.doc.data(),
               id: changes[0].payload.doc.id,
             };
           }
@@ -85,14 +88,7 @@ export class BicycleRentService {
         openTo: open as any,
       });
 
-      // Ждем 5 сек
-      const interval$ = interval(1000).pipe(
-        map(v => this.maxInterval - v),
-        takeWhile(v => v > 0),
-      );
-      await interval$.toPromise();
-
-      // Через 5 сек забираем ставим велик
+      // Забираем ставим велик
       const bicycles = [...rentalPoint.bicycles, bicycleRef];
 
       // Сохраним велосипеды
@@ -102,6 +98,21 @@ export class BicycleRentService {
 
       // Удаляем активный велосипед
       await this.firestore.collection('activeBicycles').doc(bicycleRef.id).delete();
+
+      const currentTime = moment();
+      const rentalStart = moment(activeBicycle.rentalStart.toDate());
+      const duration = moment.duration(currentTime.diff(moment(rentalStart)));
+
+      // Покажем диалоговое окно
+      const rentalBicycleSuccessModal = await this.modalController.create({
+        component: ReturnBicycleSuccessPageComponent,
+        componentProps: {
+          amount: calculateAmount(rentalStart, currentTime),
+          duration,
+          mileage: activeBicycle.mileage,
+        }
+      });
+      await rentalBicycleSuccessModal.present();
     } else {
       // ПОЛУЧАЕМ НОВЫЙ ВЕЛОСИПЕД
 
@@ -122,9 +133,6 @@ export class BicycleRentService {
         takeWhile(v => v > 0),
       );
       await interval$.toPromise();
-
-      // Через 5 сек скроем диалоговое окно
-      await getBicycleModal.dismiss();
 
       // Забираем первый попавшийся велик
       const bicycles = [...rentalPoint.bicycles];
@@ -151,6 +159,7 @@ export class BicycleRentService {
         component: GetBicycleSuccessPageComponent,
       });
       await getBicycleSuccessModal.present();
+      await getBicycleModal.dismiss();
     }
   }
 }

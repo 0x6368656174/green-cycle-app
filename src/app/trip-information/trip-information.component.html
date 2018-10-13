@@ -1,22 +1,22 @@
 <div class="row">
-    <div class="cell">
+    <div class="cell" [ngClass]="{'cell--no-border': !border}">
         <img class="image image--cyclist" src="../../assets/green-cycles.svg" alt="Велосипедист">
         <div class="value">{{mileage$|async}}</div>
         <div class="hint">Расстояние, км</div>
     </div>
-    <div class="cell">
+    <div class="cell" [ngClass]="{'cell--no-border': !border}">
         <img class="image image--stopwatch" src="../../assets/stopwatch.svg" alt="Часы">
         <div class="value">{{durationStr$|async}}</div>
         <div class="hint">{{durationUnitStr$|async}}</div>
     </div>
 </div>
 <div class="row">
-    <div class="cell">
+    <div class="cell" [ngClass]="{'cell--no-border': !border}">
         <img class="image image--fire" src="../../assets/fire.png" alt="Огонь">
         <div class="value">{{ccal$|async}}</div>
         <div class="hint">Потрачено, ккал</div>
     </div>
-    <div class="cell">
+    <div class="cell" [ngClass]="{'cell--no-border': !border}">
         <div class="top-hint">Сэкономлено</div>
         <img class="image image--carbon-dioxide" src="../../assets/carbon-dioxide.svg" alt="Часы">
         <div class="value">{{co2$|async}}</div>

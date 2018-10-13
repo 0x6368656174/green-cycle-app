@@ -20,7 +20,7 @@ export class GeolocationService {
           longitude: position.coords.longitude,
         });
       },
-      (v) => console.log('error', v),
+      (v) => console.error('error', v),
       { timeout: 30000 },
     );
   }

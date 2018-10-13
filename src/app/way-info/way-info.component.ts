@@ -32,19 +32,23 @@ export class WayInfoComponent implements OnInit {
 
     this.duration$ = combineLatest(currentTime$, this.activeBicycle$).pipe(
       map(([currentTime, bicycle]) => {
+        if (!bicycle.rentalStart) {
+          return '0 мин';
+        }
+
         const duration = moment.duration(currentTime.diff(moment(bicycle.rentalStart.toDate()))).clone();
 
         let durationString = '';
-        if (duration.days() >= 1) {
+        if (duration.asDays() >= 1) {
           durationString += pluralize(duration.days(), 'д', 'д', 'д');
         }
-        if (duration.hours() >= 1) {
+        if (duration.asHours() >= 1) {
           durationString += ' ' + pluralize(duration.hours(), 'ч', 'ч', 'ч');
         }
-        if (duration.days() === 0 && duration.minutes() >= 1) {
+        if (duration.asHours() === 0 && duration.asMinutes() >= 1) {
           durationString += ' ' + pluralize(duration.minutes(), 'мин', 'мин', 'мин');
         }
-        if (duration.asMinutes() === 0) {
+        if (duration.asMinutes() < 1) {
           durationString = '0 мин';
         }
 
@@ -58,8 +62,8 @@ export class WayInfoComponent implements OnInit {
 
     this.amount$ = combineLatest(currentTime$, this.activeBicycle$).pipe(
       map(([currentTime, bicycle]) => {
-        if (!bicycle) {
-          return '';
+        if (!bicycle || !bicycle.rentalStart) {
+          return '0';
         }
 
         return calculateAmount(moment(bicycle.rentalStart.toDate()), currentTime).toFixed(0);

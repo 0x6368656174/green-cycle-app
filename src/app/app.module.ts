@@ -28,6 +28,7 @@ import { GetBicycleSuccessPageComponent } from './get-bicycle-success-page/get-b
 import { TripInformationPageComponent } from './trip-informaion-page/trip-information-page.component';
 import { GetBicycleHelloPageComponent } from './get-bicycle-hello-page/get-bicycle-hello-page.component';
 import { ReturnBicyclePageComponent } from './return-bicycle-page/return-bicycle-page.component';
+import { ReturnBicycleSuccessPageComponent } from './return-bicycle-success-page/return-bicycle-success-page.component';
 
 @NgModule({
   declarations: [
@@ -49,10 +50,12 @@ import { ReturnBicyclePageComponent } from './return-bicycle-page/return-bicycle
     TripInformationPageComponent,
     GetBicycleHelloPageComponent,
     ReturnBicyclePageComponent,
+    ReturnBicycleSuccessPageComponent,
   ],
   entryComponents: [
     GetBicyclePageComponent,
     GetBicycleSuccessPageComponent,
+    ReturnBicycleSuccessPageComponent,
   ],
   imports: [
     BrowserModule,

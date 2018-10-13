@@ -10,6 +10,8 @@ import { pluralize } from '../pluralize';
   styleUrls: ['./trip-information.component.scss']
 })
 export class TripInformationComponent implements OnInit {
+  @Input() border = true;
+
   mileage$ = new BehaviorSubject(0);
   @Input()
   set mileage(mileage: number) {
@@ -41,21 +43,21 @@ export class TripInformationComponent implements OnInit {
     this.durationStr$ = notNulDuration$.pipe(
       filter(v => !!v),
       map(duration => {
-        if (duration.days() >= 1) {
+        if (duration.asDays() >= 1) {
           if (duration.asDays() % 10 < 0.1) {
             return duration.asDays().toFixed(0);
           }
 
           return duration.asDays().toFixed(1);
         }
-        if (duration.hours() >= 1) {
+        if (duration.asHours() >= 1) {
           if (duration.asHours() % 10 < 0.1) {
             return duration.asHours().toFixed(0);
           }
 
           return duration.asHours().toFixed(1);
         }
-        if (duration.minutes() >= 1) {
+        if (duration.asMinutes() >= 1) {
           return duration.minutes().toString();
         }
 
