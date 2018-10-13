@@ -1,8 +1,8 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import { combineLatest, Subject } from 'rxjs';
-import { distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
+import { distinctUntilChanged, filter, map, switchMap, takeUntil } from 'rxjs/operators';
 import { IRentalPoint } from '../db';
 import * as DG from '2gis-maps';
 import { findNearest } from 'geolib';
@@ -33,11 +33,9 @@ import marker21 from '../../assets/markers/21.svg';
 import marker22 from '../../assets/markers/22.svg';
 import marker23 from '../../assets/markers/23.svg';
 import marker24 from '../../assets/markers/24.svg';
-
-interface IGeoCoordinate {
-  latitude: number;
-  longitude: number;
-}
+import { GeolocationService } from '../geolocation.service';
+import * as firebase from 'firebase/app';
+import '@firebase/firestore';
 
 @Component({
   selector: 'app-map',
@@ -45,6 +43,11 @@ interface IGeoCoordinate {
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
+  @Input() set rentalPointId(id: string) {
+    this.rentalPointId$.next(id);
+  }
+  private rentalPointId$ = new BehaviorSubject<string | undefined>(undefined);
+
   @Output() nearestRentalPoint = new EventEmitter<string>();
 
   @ViewChild('map') private mapElement: ElementRef<HTMLDivElement>;
@@ -53,10 +56,8 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
   private rentalPointsMarkers = {};
   private ngUnsubscribe = new Subject();
   private myMarker;
-  private myPositionWatchId?: number;
-  private myPosition$: Subject<IGeoCoordinate> = new Subject();
 
-  constructor(private firestore: AngularFirestore, private router: Router) { }
+  constructor(private firestore: AngularFirestore, private router: Router, private geolocation: GeolocationService) { }
 
   ngOnInit(): void {
     this.map = DG.map(this.mapElement.nativeElement, {
@@ -66,9 +67,26 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
       'fullscreenControl': false,
     });
 
-    const rentalPointsChanges$ = this.firestore.collection<IRentalPoint>('rentalPoints').stateChanges().pipe(
+    const rentalPointsChanges$ = this.rentalPointId$.pipe(
+      switchMap(id => {
+        if (id === undefined) {
+          return this.firestore.collection<IRentalPoint>('rentalPoints').stateChanges();
+        }
+
+        return this.firestore.collection<IRentalPoint>(
+          'rentalPoints',
+          ref => ref.where(firebase.firestore.FieldPath.documentId(), '==', id),
+        ).stateChanges();
+      })
+    ).pipe(
       takeUntil(this.ngUnsubscribe),
     );
+
+    this.rentalPointId$.pipe(
+      filter((id): id is string => !!id),
+      switchMap(id => this.firestore.collection('rentalPoints').doc<IRentalPoint>(id).valueChanges()),
+      takeUntil(this.ngUnsubscribe),
+    ).subscribe(point => this.map.panTo(DG.latLng(point.location.latitude, point.location.longitude)));
 
     rentalPointsChanges$.subscribe(actions => {
       actions.forEach(action => {
@@ -119,7 +137,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
       shadowAnchor: [22, 94]
     });
 
-    this.myPosition$.pipe(
+    this.geolocation.geolocation.pipe(
       takeUntil(this.ngUnsubscribe),
     ).subscribe(position => {
       if (!this.myMarker) {
@@ -131,17 +149,6 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
         this.myMarker.setLatLng(DG.latLng(position.latitude, position.longitude));
       }
     });
-
-    this.myPositionWatchId = navigator.geolocation.watchPosition(
-      (position) => {
-        this.myPosition$.next({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        });
-      },
-      (v) => console.log('error', v),
-      { timeout: 30000 },
-    );
 
     const rentalPointsPositions$ = this.firestore.collection<IRentalPoint>('rentalPoints').snapshotChanges().pipe(
       takeUntil(this.ngUnsubscribe),
@@ -157,7 +164,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
       }),
     );
 
-    combineLatest(rentalPointsPositions$, this.myPosition$).pipe(
+    combineLatest(rentalPointsPositions$, this.geolocation.geolocation).pipe(
       map(([rentalPointsPositions, myPosition]) => {
         const nearest: any = findNearest(myPosition, rentalPointsPositions);
         return rentalPointsPositions[nearest.key];
@@ -221,9 +228,5 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-
-    if (this.myPositionWatchId) {
-      navigator.geolocation.clearWatch(this.myPositionWatchId);
-    }
   }
 }

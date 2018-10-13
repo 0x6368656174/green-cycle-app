@@ -21,7 +21,7 @@ import { AuthCodePageComponent } from './auth-code-page/auth-code-page.component
 import { MapComponent } from './map/map.component';
 import { HeaderComponent } from './header/header.component';
 import { NearestRentalPointComponent } from './nearest-rental-point/nearest-rental-point.component';
-import { ButtonComponent } from './button/button.component';
+import { RentalPointsListLinkComponent } from './rental-points-list-link/rental-points-list-link.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +34,7 @@ import { ButtonComponent } from './button/button.component';
     HeaderComponent,
     IconButtonComponent,
     NearestRentalPointComponent,
-    ButtonComponent,
+    RentalPointsListLinkComponent,
   ],
   entryComponents: [],
   imports: [

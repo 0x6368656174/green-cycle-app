@@ -1,0 +1,25 @@
+@import '../variables';
+
+:host {
+  display: inline-block;
+}
+
+.link {
+  color: $color-green-1;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+
+  &:before {
+    content: '';
+    display: block;
+    width: 10px;
+    height: 7px;
+    mask-image: url('../../assets/icons/icon--menu.svg');
+    mask-size: 10px 7px;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    background-color: $color-green-1;
+    margin-right: 7px;
+  }
+}

@@ -1,15 +1,59 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>
-      Rental Point Info
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-header></app-header>
 
-<ion-content>
-WORK!
+<ion-content *ngIf="rentalPoint$|async as rentalPoint">
+    <div class="top-info" >
+        <div class="title-hint">Пункт проката</div>
+        <div class="title">{{rentalPoint.address}}</div>
+
+        <app-rental-points-list-link></app-rental-points-list-link>
+    </div>
+
+    <app-map class="map" [rentalPointId]="rentalPoint.id"></app-map>
+
+    <div class="middle-info">
+        <div class="middle-info-title">Информация</div>
+
+        <div class="free">{{freeCount$|async}}</div>
+
+        <div class="parking">{{parkingCount$|async}}</div>
+
+        <div class="middle-info-title middle-info-title--price">Стоимость</div>
+
+        <div class="red">Обязательный залог составляет 4500 рублей</div>
+
+        <ul class="price">
+            <li class="price-line">
+                <div class="left">0-30 минут</div>
+                <div class="dashed"></div>
+                <div class="right">10 рублей</div>
+            </li>
+            <li class="price-line">
+                <div class="left">30-60 минут</div>
+                <div class="dashed"></div>
+                <div class="right">20 рублей</div>
+            </li>
+            <li class="price-line">
+                <div class="left">60-90 минут</div>
+                <div class="dashed"></div>
+                <div class="right">30 рублей</div>
+            </li>
+            <li class="price-line">
+                <div class="left">90 минут - 6 часов</div>
+                <div class="dashed"></div>
+                <div class="right">300 рублей</div>
+            </li>
+            <li class="price-line">
+                <div class="left">6 часов - 1 день</div>
+                <div class="dashed"></div>
+                <div class="right">1000 рублей</div>
+            </li>
+            <li class="price-line">
+                <div class="left">1 день - 2 дня</div>
+                <div class="dashed"></div>
+                <div class="right">1600 рублей</div>
+            </li>
+        </ul>
+
+        <ion-button class="get-bicycle-button" expand="full">Взять велосипед</ion-button>
+    </div>
 </ion-content>
-
