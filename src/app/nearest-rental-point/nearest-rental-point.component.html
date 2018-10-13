@@ -1,11 +1,17 @@
-<div class="info" *ngIf="rentalPoint$ | async as rentalPoint">
-    <div class="left">
-        <div class="address">{{rentalPoint.address}}</div>
-        <div class="info-hint">Ближайший прокат</div>
-    </div>
-    <div class="right">
-        <div class="free">{{rentalPoint.bicycles.length}}</div>
-        <div class="free-hint">Свободно</div>
+<div class="info-container">
+    <div class="info">
+        <div class="left">
+            <div class="address">
+                <div class="loader" [ngClass]="{'animated-background': !(rentalPoint$ | async)}"></div>
+
+                {{(rentalPoint$ | async)?.address}}
+            </div>
+            <div class="info-hint">Ближайший прокат</div>
+        </div>
+        <div class="right" *ngIf="rentalPoint$|async as rentalPoint">
+            <div class="free">{{rentalPoint.bicycles.length}}</div>
+            <div class="free-hint">Свободно</div>
+        </div>
     </div>
 </div>
 

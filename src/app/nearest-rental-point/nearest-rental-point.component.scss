@@ -9,6 +9,11 @@
   padding-top: 20px;
 }
 
+.info-container {
+  height: 50px;
+  width: 100%;
+}
+
 .info {
   display: flex;
   align-items: center;
@@ -17,6 +22,20 @@
 .address {
   color: $color-black-1;
   font-size: 22px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.loader {
+  display: none;
+}
+
+.loader.animated-background {
+  display: block;
+  height: 4px;
+  border-radius: 2px;
+  width: 200px;
 }
 
 .info-hint {
@@ -30,6 +49,7 @@
 }
 
 .free {
+  display: inline-block;
   color: $color-green-1;
   font-size: 27px;
 }
