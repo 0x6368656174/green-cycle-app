@@ -1,9 +1,15 @@
 @import '../variables';
 
 .cyclist {
-  margin-top: 23px;
-  margin-left: 33px;
+  display: block;
   width: 342px;
+  margin: auto;
+  margin-top: 23px;
+}
+
+.logo {
+  display: block;
+  margin: auto;
 }
 
 .content {

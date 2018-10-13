@@ -1,9 +1,10 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest, of, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, map, switchMap, takeUntil } from 'rxjs/operators';
-import { IRentalPoint } from '../db';
+import { AuthService } from '../auth.service';
+import { IActiveBicycle, IRentalPoint } from '../db';
 import * as DG from '2gis-maps';
 import { findNearest } from 'geolib';
 import { isEqual } from 'lodash';
@@ -57,7 +58,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
   private ngUnsubscribe = new Subject();
   private myMarker;
 
-  constructor(private firestore: AngularFirestore, private router: Router, private geolocation: GeolocationService) { }
+  constructor(private firestore: AngularFirestore, private router: Router, private geolocation: GeolocationService, private auth: AuthService) { }
 
   ngOnInit(): void {
     this.map = DG.map(this.mapElement.nativeElement, {
@@ -137,19 +138,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
       shadowAnchor: [22, 94]
     });
 
-    this.geolocation.geolocation.pipe(
-      takeUntil(this.ngUnsubscribe),
-    ).subscribe(position => {
-      if (!this.myMarker) {
-        this.myMarker = DG.marker(
-          [position.latitude, position.longitude],
-          {icon: myIcon},
-        ).addTo(this.map);
-      } else {
-        this.myMarker.setLatLng(DG.latLng(position.latitude, position.longitude));
-      }
-    });
-
+    // Найдем точки проката
     const rentalPointsPositions$ = this.firestore.collection<IRentalPoint>('rentalPoints').snapshotChanges().pipe(
       takeUntil(this.ngUnsubscribe),
       map(changes => {
@@ -164,9 +153,59 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
       }),
     );
 
-    combineLatest(rentalPointsPositions$, this.geolocation.geolocation).pipe(
-      map(([rentalPointsPositions, myPosition]) => {
-        const nearest: any = findNearest(myPosition, rentalPointsPositions);
+    // Найдем мой активный велосипед
+    const activeBicycle$ = this.auth.clientRef.pipe(
+      switchMap(clientRef => {
+        if (!clientRef) {
+          return of([]);
+        }
+
+        return  this.firestore.collection<IActiveBicycle>(
+          'activeBicycles',
+          ref => ref.where('client', '==', clientRef),
+        ).valueChanges();
+      }),
+      map(bicycles => {
+        if (bicycles.length > 0) {
+          return bicycles[0];
+        }
+
+        return null;
+      }),
+    );
+
+    // Получим мое текущее положение
+    const myLocation$ = combineLatest(this.geolocation.geolocation, activeBicycle$).pipe(
+      map(([geolocation, activeBicycle]) => {
+        // if (activeBicycle) {
+        //   return {
+        //     latitude: activeBicycle.location.latitude,
+        //     longitude: activeBicycle.location.longitude,
+        //   };
+        // }
+
+        return geolocation;
+      }),
+    );
+
+    // Установим мой маркер
+    myLocation$.pipe(
+      takeUntil(this.ngUnsubscribe),
+    ).subscribe(myLocation => {
+      if (!this.myMarker) {
+        this.myMarker = DG.marker(
+          [myLocation.latitude, myLocation.longitude],
+          {icon: myIcon},
+        ).addTo(this.map);
+      } else {
+        this.myMarker.setLatLng(DG.latLng(myLocation.latitude, myLocation.longitude));
+      }
+    });
+
+    // Вернем ближайший прокат
+    combineLatest(rentalPointsPositions$, myLocation$).pipe(
+      map(([rentalPointsPositions, myLocation]) => {
+        const nearest: any = findNearest(myLocation, rentalPointsPositions);
         return rentalPointsPositions[nearest.key];
       }),
       distinctUntilChanged(isEqual),

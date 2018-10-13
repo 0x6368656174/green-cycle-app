@@ -2,4 +2,6 @@
 
 <app-map class="map" (nearestRentalPoint)="nearestPoint.id = $event"></app-map>
 
+<app-way-info class="on-way" *ngIf="activeBicycle$ | async as activeBicycle" [activeBicycle]="activeBicycle"></app-way-info>
+
 <app-nearest-rental-point #nearestPoint class="nearest-rental-point"></app-nearest-rental-point>

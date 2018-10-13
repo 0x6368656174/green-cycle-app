@@ -43,7 +43,7 @@ export class AuthCodePageComponent implements OnInit {
     if (!client) {
       await clientDoc.set({
         phone: parseInt(user.phoneNumber, 10),
-        card: '',
+        card: 'VISA •••• 4567',
       });
     }
 
