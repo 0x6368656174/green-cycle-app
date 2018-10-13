@@ -12,6 +12,7 @@ import { IActiveBicycle } from '../db';
 })
 export class HomePageComponent implements OnInit, OnDestroy {
   activeBicycle$: Observable<IActiveBicycle>;
+  onTheWay$: Observable<boolean>;
 
   constructor(private firestore: AngularFirestore, private auth: AuthService) {}
 
@@ -35,6 +36,10 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
         return null;
       }),
+    );
+
+    this.onTheWay$ = this.activeBicycle$.pipe(
+      map(bicycle => !!bicycle),
     );
   }
 

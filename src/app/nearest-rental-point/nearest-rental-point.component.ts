@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { IRentalPoint } from '../db';
 
@@ -13,6 +13,11 @@ export class NearestRentalPointComponent implements OnInit {
   private id$ = new Subject<string>();
   @Input() set id(id: string) {
     this.id$.next(id);
+  }
+
+  onTheWay$ = new BehaviorSubject<boolean>(false);
+  @Input() set onTheWay(onTheWay: boolean) {
+    this.onTheWay$.next(onTheWay);
   }
 
   rentalPoint$: Observable<IRentalPoint>;

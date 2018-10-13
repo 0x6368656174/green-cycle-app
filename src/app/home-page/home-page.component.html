@@ -4,4 +4,4 @@
 
 <app-way-info class="on-way" *ngIf="activeBicycle$ | async as activeBicycle" [activeBicycle]="activeBicycle"></app-way-info>
 
-<app-nearest-rental-point #nearestPoint class="nearest-rental-point"></app-nearest-rental-point>
+<app-nearest-rental-point #nearestPoint class="nearest-rental-point" [onTheWay]="onTheWay$ | async"></app-nearest-rental-point>

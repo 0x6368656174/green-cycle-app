@@ -9,15 +9,24 @@
             <div class="info-hint">Ближайший прокат</div>
         </div>
         <div class="right" *ngIf="rentalPoint$|async as rentalPoint">
-            <div class="free">{{rentalPoint.bicycles.length}}</div>
-            <div class="free-hint">Свободно</div>
+            <div *ngIf="!(onTheWay$ | async)">
+                <div class="free">{{rentalPoint.bicycles.length}}</div>
+                <div class="free-hint">Свободно</div>
+            </div>
+            <div *ngIf="onTheWay$ | async">
+                <div class="free">{{rentalPoint.capacity - rentalPoint.bicycles.length}}</div>
+                <div class="free-hint">Мест</div>
+            </div>
         </div>
     </div>
 </div>
 
 <div class="actions">
     <!--<app-button></app-button>-->
-    <ion-button class="get-bicycle-button" expand="full">Взять велосипед</ion-button>
+    <ion-button class="get-bicycle-button" expand="full">
+        <span *ngIf="!(onTheWay$ | async)"> Взять велосипед </span>
+        <span *ngIf="onTheWay$ | async"> Завершить поездку </span>
+    </ion-button>
 
     <app-rental-points-list-link class="rental-list"></app-rental-points-list-link>
 </div>

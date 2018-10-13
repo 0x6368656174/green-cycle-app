@@ -40,7 +40,7 @@ export class WayInfoComponent implements OnInit {
         if (duration.hours() >= 1) {
           durationString += ' ' + pluralize(duration.hours(), 'ч', 'ч', 'ч');
         }
-        if (duration.minutes() >= 1) {
+        if (duration.days() === 0 && duration.minutes() >= 1) {
           durationString += ' ' + pluralize(duration.minutes(), 'мин', 'мин', 'мин');
         }
         if (duration.asMinutes() === 0) {
