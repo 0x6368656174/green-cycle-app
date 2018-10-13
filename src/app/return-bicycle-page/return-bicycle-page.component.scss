@@ -1,5 +1,10 @@
 @import '../variables';
 
+:host {
+  background-color: #fff;
+  display: block;
+}
+
 .content {
   padding-left: 25px;
   padding-right: 25px;
