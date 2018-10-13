@@ -44,6 +44,7 @@ export class AuthCodePageComponent implements OnInit {
       await clientDoc.set({
         phone: parseInt(user.phoneNumber, 10),
         card: 'VISA •••• 4567',
+        nfc: null,
       });
     }
 

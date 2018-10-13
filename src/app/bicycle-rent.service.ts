@@ -3,7 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import * as moment from 'moment';
 import { interval, Observable, Subject } from 'rxjs';
 import { first, map, takeWhile } from 'rxjs/operators';
-import { IActiveBicycle, IRentalPoint } from './db';
+import { IActiveBicycle, IClient, IRentalPoint } from './db';
 import { ModalController } from '@ionic/angular';
 import { AuthService } from './auth.service';
 import { GeolocationService } from './geolocation.service';
@@ -28,17 +28,41 @@ export class BicycleRentService {
               private auth: AuthService,
               private geolocation: GeolocationService,
   ) {
-    const windowAny: any = window;
-    console.log(windowAny.nfc);
-    if (windowAny.nfc) {
-      windowAny.nfc.addNdefListener(async data => {
-        const payload = data.tag.ndefMessage[0].payload;
-        const rentalPointId = windowAny.nfc.bytesToString(payload).substring(3);
+    auth.client.subscribe(async client => {
+      if (!client.nfc) {
+        return;
+      }
 
-        this.newRentalPointId.next(rentalPointId);
-        await this.onRentalPointFound(rentalPointId);
+      const nfc = client.nfc;
+      const clientRef = await this.auth.clientRef.pipe(first()).toPromise();
+
+      await this.firestore.collection('clients').doc<IClient>(clientRef.id).update({
+        nfc: null,
       });
-    }
+
+      this.onRentalPointFound(nfc);
+    });
+    // const windowAny: any = window;
+    // if (windowAny.nfc) {
+    //   const nfc = windowAny.nfc;
+    //   setTimeout(() => {
+    //     nfc.beginSession(() => {
+    //       nfc.addNdefListener(data => console.log(data), () => console.log('addNdefListener ready'));
+    //     });
+    //     // nfc.addTagDiscoveredListener(data => console.log(data), () => console.log('addTagDiscoveredListener ready'));
+    //     // nfc.addNdefFormatableListener(data => console.log(data), () => console.log('addNdefFormatableListener ready'));
+    //     // nfc.addMimeTypeListener('text/gc', data => console.log(data), () => console.log('addMimeTypeListener ready'));
+    //   }, 4000);
+    //   // nfc.addMimeTypeListener('text/gc', async data => {
+    //   //   console.log('read from NFC', data);
+    //   //   const payload = data.tag.ndefMessage[0].payload;
+    //   //   const rentalPointId = windowAny.nfc.bytesToString(payload).substring(3);
+    //   //
+    //   //   this.newRentalPointId.next(rentalPointId);
+    //   //   await this.onRentalPointFound(rentalPointId);
+    //   // }, () => console.log('NFC ready'),
+    //   //   (error) => console.error(error));
+    // }
   }
 
   async onRentalPointFound(rentalPointId: string) {

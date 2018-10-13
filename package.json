@@ -41,7 +41,6 @@
     "geolib": "^2.0.24",
     "lodash": "^4.17.11",
     "moment": "^2.22.2",
-    "phonegap-nfc": "1.0.3",
     "rxjs": "6.2.2",
     "rxjs-compat": "^6.3.3",
     "zone.js": "^0.8.26"
@@ -86,8 +85,7 @@
         "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
       },
       "cordova-plugin-ionic-keyboard": {},
-      "cordova-plugin-geolocation": {},
-      "phonegap-nfc": {}
+      "cordova-plugin-geolocation": {}
     },
     "platforms": [
       "android"

@@ -45,7 +45,7 @@ export class WayInfoComponent implements OnInit {
         if (duration.asHours() >= 1) {
           durationString += ' ' + pluralize(duration.hours(), 'ч', 'ч', 'ч');
         }
-        if (duration.asHours() === 0 && duration.asMinutes() >= 1) {
+        if (duration.asHours() < 1 && duration.asMinutes() >= 1) {
           durationString += ' ' + pluralize(duration.minutes(), 'мин', 'мин', 'мин');
         }
         if (duration.asMinutes() < 1) {
