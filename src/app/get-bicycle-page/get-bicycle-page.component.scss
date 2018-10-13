@@ -1,0 +1,43 @@
+@import "../variables";
+
+:host {
+  display: flex;
+  background-color: #fff;
+  align-items: center;
+}
+
+.image {
+  display: block;
+  margin-top: 163px;
+  width: 80px;
+}
+
+.text {
+  margin-top: 32px;
+  color: $color-black-1;
+  font-size: 22px;
+  text-align: center;
+}
+
+.time {
+  margin-top: 20px;
+  color: $color-red-1;
+  font-size: 48px;
+}
+
+.bottom {
+  margin-top: auto;
+  margin-bottom: 60px;
+  text-align: center;
+}
+
+.hint {
+  color: $color-gray-1;
+  font-size: 10px;
+}
+
+.link {
+  color: $color-green-1;
+  font-size: 14px;
+  text-decoration: none;
+}

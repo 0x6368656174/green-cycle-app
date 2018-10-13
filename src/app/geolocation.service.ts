@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 interface IGeoCoordinate {
   latitude: number;
@@ -10,7 +10,7 @@ interface IGeoCoordinate {
   providedIn: 'root'
 })
 export class GeolocationService {
-  geolocation = new Subject<IGeoCoordinate>();
+  geolocation = new BehaviorSubject<IGeoCoordinate | null>(null);
 
   constructor() {
     navigator.geolocation.watchPosition(

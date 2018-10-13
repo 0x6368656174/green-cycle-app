@@ -6,6 +6,7 @@ export interface IRentalPoint {
   readonly capacity: number;
   readonly bicycles: DocumentReference[];
   readonly location: GeoPoint;
+  readonly openTo: Timestamp;
 }
 
 export interface IBicycle {

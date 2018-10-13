@@ -5,12 +5,10 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
-
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { environment } from '../environments/environment';
-
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HomePageComponent } from './home-page/home-page.component';
@@ -24,6 +22,9 @@ import { NearestRentalPointComponent } from './nearest-rental-point/nearest-rent
 import { RentalPointsListLinkComponent } from './rental-points-list-link/rental-points-list-link.component';
 import { LeftMenuComponent } from './left-menu/left-menu.component';
 import { WayInfoComponent } from './way-info/way-info.component';
+import { TripInformationComponent } from './trip-information/trip-information.component';
+import { GetBicyclePageComponent } from './get-bicycle-page/get-bicycle-page.component';
+import { GetBicycleSuccessPageComponent } from './get-bicycle-success-page/get-bicycle-success-page.component';
 
 @NgModule({
   declarations: [
@@ -39,8 +40,14 @@ import { WayInfoComponent } from './way-info/way-info.component';
     RentalPointsListLinkComponent,
     LeftMenuComponent,
     WayInfoComponent,
+    TripInformationComponent,
+    GetBicyclePageComponent,
+    GetBicycleSuccessPageComponent,
   ],
-  entryComponents: [],
+  entryComponents: [
+    GetBicyclePageComponent,
+    GetBicycleSuccessPageComponent,
+  ],
   imports: [
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebase),
@@ -48,7 +55,7 @@ import { WayInfoComponent } from './way-info/way-info.component';
     AngularFireAuthModule,
     ReactiveFormsModule,
     IonicModule.forRoot(),
-    AppRoutingModule
+    AppRoutingModule,
   ],
   providers: [
     StatusBar,

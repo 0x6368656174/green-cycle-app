@@ -176,6 +176,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Получим мое текущее положение
     const myLocation$ = combineLatest(this.geolocation.geolocation, activeBicycle$).pipe(
+      filter(geolocation => !!geolocation),
       map(([geolocation, activeBicycle]) => {
         // if (activeBicycle) {
         //   return {
