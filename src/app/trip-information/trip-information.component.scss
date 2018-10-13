@@ -1,0 +1,68 @@
+@import '../variables';
+
+:host {
+  display: block;
+  width: calc(100vw - 50px);
+  height: calc(100vw - 50px);
+}
+
+.row {
+  display: flex;
+  height: 50%;
+  margin-top: -1px;
+}
+
+.cell {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 26px;
+  border: 1px solid #c0f8d7;
+
+  &:nth-of-type(2) {
+    margin-left: -1px;
+  }
+}
+
+.image {
+  &--cyclist {
+    width: 61px;
+    height: 59px;
+  }
+
+  &--stopwatch {
+    width: 58px;
+    height: 58px;
+  }
+
+  &--fire {
+    width: 49px;
+    height: 49px;
+  }
+
+  &--carbon-dioxide {
+    width: 48px;
+    height: 34px;
+  }
+}
+
+.top-hint {
+  color: $color-gray-1;
+  font-size: 10px;
+  margin-bottom: 4px;
+}
+
+.hint {
+  font-size: 10px;
+  color: $color-black-1;
+  margin-top: 4px;
+}
+
+.value {
+  color: $color-green-1;
+  font-size: 22px;
+  margin-top: 8px;
+}

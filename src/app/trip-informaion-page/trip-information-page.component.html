@@ -1,0 +1,26 @@
+<app-header></app-header>
+
+<ion-content>
+    <div class="content">
+        <a class="back-link" (click)="back()">Назад</a>
+
+        <div class="title">Информация о поездке</div>
+
+        <app-trip-information class="info" [duration]="duration$|async" [mileage]="mileage$|async"></app-trip-information>
+
+        <div class="amount-row">
+            <div class="amount-label">
+                <img class="amount-image" src="../../assets/card.svg" alt="Банковская карта">
+                Сумма
+            </div>
+
+            <div class="amount-value">
+                {{amount$|async}} рублей
+            </div>
+        </div>
+
+        <ion-button class="button" expand="full">Завершить поездку</ion-button>
+
+        <a class="link">Сообщить о проблеме</a>
+    </div>
+</ion-content>

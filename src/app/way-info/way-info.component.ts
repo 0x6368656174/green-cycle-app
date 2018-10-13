@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorSubject, combineLatest, interval, Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { IActiveBicycle } from '../db';
@@ -21,7 +22,7 @@ export class WayInfoComponent implements OnInit {
   mileage$: Observable<string>;
   amount$: Observable<string>;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
     const currentTime$ = interval(60000).pipe(
@@ -62,4 +63,7 @@ export class WayInfoComponent implements OnInit {
     );
   }
 
+  toTripInformation() {
+    this.router.navigate(['trip-information']);
+  }
 }

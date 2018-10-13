@@ -6,6 +6,7 @@ import { AuthGuard } from './auth.guard';
 import { HomePageComponent } from './home-page/home-page.component';
 import { NotAuthGuard } from './not-auth.guard';
 import { RentalPointInfoPageComponent } from './rental-point-info-page/rental-point-info-page.component';
+import { TripInformationPageComponent } from './trip-informaion-page/trip-information-page.component';
 
 const routes: Routes = [
   {
@@ -14,6 +15,7 @@ const routes: Routes = [
     children: [
       { path: '', component: HomePageComponent, },
       { path: 'rental-point/:id', component: RentalPointInfoPageComponent, },
+      { path: 'trip-information', component: TripInformationPageComponent, },
     ],
   },
   { path: 'auth', component: AuthPageComponent, canActivate: [NotAuthGuard], },
