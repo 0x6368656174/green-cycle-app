@@ -3,7 +3,7 @@ import {Location} from '@angular/common';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { combineLatest, interval, Observable, of } from 'rxjs';
-import { map, startWith, switchMap } from 'rxjs/operators';
+import { filter, map, startWith, switchMap } from 'rxjs/operators';
 import { AuthService } from '../auth.service';
 import { IActiveBicycle } from '../db';
 import * as moment from 'moment';
@@ -41,6 +41,7 @@ export class TripInformationPageComponent implements OnInit {
 
         return null;
       }),
+      filter(v => !!v),
     );
 
     const currentTime$ = interval(60000).pipe(

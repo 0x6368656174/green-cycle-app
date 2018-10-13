@@ -1,6 +1,7 @@
 :host {
   background-color: #fff;
-  display: block;
+  display: flex;
+  flex-direction: column;
 }
 
 .map {

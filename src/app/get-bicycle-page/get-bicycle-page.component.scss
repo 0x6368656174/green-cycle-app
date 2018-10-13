@@ -1,9 +1,10 @@
 @import "../variables";
 
 :host {
-  display: flex;
   background-color: #fff;
   align-items: center;
+  display: flex;
+  flex-direction: column;
 }
 
 .image {
