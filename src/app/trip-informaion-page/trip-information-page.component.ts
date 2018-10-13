@@ -59,6 +59,10 @@ export class TripInformationPageComponent implements OnInit {
 
     this.amount$ = combineLatest(currentTime$, activeBicycle$).pipe(
       map(([currentTime, bicycle]) => {
+        if (!bicycle) {
+          return '';
+        }
+
         return calculateAmount(moment(bicycle.rentalStart.toDate()), currentTime).toFixed(0);
       }),
     );

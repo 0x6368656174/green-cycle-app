@@ -1,10 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
-import { map, switchMap, takeUntil } from 'rxjs/operators';
-import { IRentalPoint } from '../db';
+import { combineLatest, interval, Observable, of, Subject } from 'rxjs';
+import { map, startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { AuthService } from '../auth.service';
+import { IActiveBicycle, IRentalPoint } from '../db';
 import { pluralize } from '../pluralize';
+import { calculateAmount } from '../price';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-rental-point-info',
@@ -16,10 +19,12 @@ export class RentalPointInfoPageComponent implements OnInit, OnDestroy {
   rentalPoint$: Observable<IRentalPoint & {id: string}>;
   freeCount$: Observable<string>;
   parkingCount$: Observable<string>;
+  activeBicycle$: Observable<IActiveBicycle | null>;
+  amount$: Observable<string>;
 
   private ngUnsubscribe = new Subject();
 
-  constructor(private route: ActivatedRoute, private firestore: AngularFirestore) { }
+  constructor(private route: ActivatedRoute, private firestore: AngularFirestore, private auth: AuthService) { }
 
   ngOnInit(): void {
     this.id$ = this.route.params.pipe(
@@ -49,6 +54,41 @@ export class RentalPointInfoPageComponent implements OnInit, OnDestroy {
       map(point => {
         return pluralize(point.capacity - point.bicycles.length, 'Свободное место', 'Свободных места', 'Свободных мест');
       })
+    );
+
+    this.activeBicycle$ = this.auth.clientRef.pipe(
+      switchMap(clientRef => {
+        if (!clientRef) {
+          return of([]);
+        }
+
+        return  this.firestore.collection<IActiveBicycle>(
+          'activeBicycles',
+          ref => ref.where('client', '==', clientRef),
+        ).valueChanges();
+      }),
+      map(bicycles => {
+        if (bicycles.length > 0) {
+          return bicycles[0];
+        }
+
+        return null;
+      }),
+    );
+
+    const currentTime$ = interval(60000).pipe(
+      map(() => moment()),
+      startWith(moment()),
+    );
+
+    this.amount$ = combineLatest(currentTime$, this.activeBicycle$).pipe(
+      map(([currentTime, bicycle]) => {
+        if (!bicycle) {
+          return '';
+        }
+
+        return calculateAmount(moment(bicycle.rentalStart.toDate()), currentTime).toFixed(0);
+      }),
     );
   }
 

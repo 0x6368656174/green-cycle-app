@@ -35,7 +35,7 @@
   }
 }
 
-.free {
+.cycles {
   color: $color-green-1;
   font-size: 18px;
   display: flex;
@@ -48,11 +48,20 @@
     width: 32px;
     min-width: 32px;
     height: 20px;
-    background-image: url('../../assets/icons/icon--bicycle.svg');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 32px 19px;
+    mask-image: url('../../assets/icons/icon--bicycle.svg');
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: 32px 19px;
     margin-right: 12px;
+    background-color: $color-green-1;
+  }
+
+  &--active {
+    color: $color-black-1;
+
+    &:before {
+      background-color: $color-black-1;
+    }
   }
 }
 
@@ -69,10 +78,20 @@
     width: 32px;
     min-width: 32px;
     height: 20px;
-    background-image: url('../../assets/icons/icon--parking.svg');
-    background-repeat: no-repeat;
-    background-position: center;
+    mask-image: url('../../assets/icons/icon--parking.svg');
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: 19px 19px;
     margin-right: 12px;
+    background-color: $color-black-1;
+  }
+
+  &--active {
+    color: $color-green-1;
+
+    &:before {
+      background-color: $color-green-1;
+    }
   }
 }
 
@@ -133,8 +152,36 @@
   padding-left: 25px;
   padding-right: 25px;
   position: relative;
+
+  &--with-amount {
+    height: 114px;
+    padding-top: 16px;
+  }
 }
 
 .get-bicycle-button {
   --height: 40px!important;
+}
+
+.amount-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.amount-image {
+  margin-right: 15px;
+}
+
+.amount-label {
+  color: $color-black-1;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+}
+
+.amount-value {
+  color: $color-black-1;
+  font-size: 22px;
+  margin-left: auto;
 }

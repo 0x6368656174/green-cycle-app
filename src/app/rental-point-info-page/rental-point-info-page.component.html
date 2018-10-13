@@ -13,9 +13,11 @@
     <div class="middle-info">
         <div class="middle-info-title">Информация</div>
 
-        <div class="free">{{freeCount$|async}}</div>
+        <div class="cycles" *ngIf="!(activeBicycle$|async)">{{freeCount$|async}}</div>
+        <div class="parking" *ngIf="!(activeBicycle$|async)">{{parkingCount$|async}}</div>
 
-        <div class="parking">{{parkingCount$|async}}</div>
+        <div class="parking parking--active" *ngIf="activeBicycle$|async">{{parkingCount$|async}}</div>
+        <div class="cycles cycles--active" *ngIf="activeBicycle$|async">{{freeCount$|async}}</div>
 
         <div class="middle-info-title middle-info-title--price">Стоимость</div>
 
@@ -56,6 +58,24 @@
     </div>
 </ion-content>
 
-<div class="footer">
-    <ion-button class="get-bicycle-button" expand="full">Взять велосипед</ion-button>
+<div class="footer" [ngClass]="{'footer--with-amount': amount$|async}">
+    <div class="amount-row" *ngIf="amount$|async as amount">
+        <div class="amount-label">
+            <img class="amount-image" src="../../assets/card.svg" alt="Банковская карта">
+            Сумма
+        </div>
+
+        <div class="amount-value">
+            {{amount}} рублей
+        </div>
+    </div>
+
+    <ion-button class="get-bicycle-button" expand="full">
+        <span *ngIf="!(activeBicycle$|async)">
+        Взять велосипед
+        </span>
+        <span *ngIf="activeBicycle$|async">
+        Завершить поездку
+        </span>
+    </ion-button>
 </div>

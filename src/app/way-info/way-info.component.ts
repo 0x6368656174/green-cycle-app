@@ -58,6 +58,10 @@ export class WayInfoComponent implements OnInit {
 
     this.amount$ = combineLatest(currentTime$, this.activeBicycle$).pipe(
       map(([currentTime, bicycle]) => {
+        if (!bicycle) {
+          return '';
+        }
+
         return calculateAmount(moment(bicycle.rentalStart.toDate()), currentTime).toFixed(0);
       }),
     );
