@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, interval, Observable, of, Subject } from 'rxjs';
-import { map, startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { first, map, startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { AuthService } from '../auth.service';
 import { IActiveBicycle, IRentalPoint } from '../db';
 import { pluralize } from '../pluralize';
@@ -24,7 +24,7 @@ export class RentalPointInfoPageComponent implements OnInit, OnDestroy {
 
   private ngUnsubscribe = new Subject();
 
-  constructor(private route: ActivatedRoute, private firestore: AngularFirestore, private auth: AuthService) { }
+  constructor(private route: ActivatedRoute, private firestore: AngularFirestore, private auth: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     this.id$ = this.route.params.pipe(
@@ -95,5 +95,15 @@ export class RentalPointInfoPageComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+  }
+
+  async processBicycle() {
+    const activeBicycle = await this.activeBicycle$.pipe(first()).toPromise();
+
+    if (activeBicycle) {
+      this.router.navigate(['/return-bicycle']);
+    } else {
+      this.router.navigate(['/get-bicycle']);
+    }
   }
 }

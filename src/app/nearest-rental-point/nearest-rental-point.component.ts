@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { first, switchMap } from 'rxjs/operators';
 import { IRentalPoint } from '../db';
 
 @Component({
@@ -22,7 +23,7 @@ export class NearestRentalPointComponent implements OnInit {
 
   rentalPoint$: Observable<IRentalPoint>;
 
-  constructor(private firestore: AngularFirestore) { }
+  constructor(private firestore: AngularFirestore, private router: Router) { }
 
   ngOnInit() {
     this.rentalPoint$ = this.id$.pipe(
@@ -32,4 +33,13 @@ export class NearestRentalPointComponent implements OnInit {
     );
   }
 
+  async processBicycle() {
+    const onTheWay = await this.onTheWay$.pipe(first()).toPromise();
+
+    if (onTheWay) {
+      this.router.navigate(['/return-bicycle']);
+    } else {
+      this.router.navigate(['/get-bicycle']);
+    }
+  }
 }

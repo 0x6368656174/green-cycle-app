@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Location} from '@angular/common';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { Router } from '@angular/router';
 import { combineLatest, interval, Observable, of } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
 import { AuthService } from '../auth.service';
@@ -19,7 +20,7 @@ export class TripInformationPageComponent implements OnInit {
   mileage$: Observable<number>;
   duration$: Observable<moment.Duration>;
 
-  constructor(private firestore: AngularFirestore, private auth: AuthService, private location: Location) { }
+  constructor(private firestore: AngularFirestore, private auth: AuthService, private location: Location, private router: Router) { }
 
   ngOnInit() {
     const activeBicycle$ = this.auth.clientRef.pipe(
@@ -70,5 +71,9 @@ export class TripInformationPageComponent implements OnInit {
 
   back() {
     this.location.back();
+  }
+
+  returnBicycle() {
+    this.router.navigate(['/return-bicycle']);
   }
 }

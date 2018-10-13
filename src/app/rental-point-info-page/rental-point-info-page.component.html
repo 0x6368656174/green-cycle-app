@@ -70,7 +70,7 @@
         </div>
     </div>
 
-    <ion-button class="get-bicycle-button" expand="full">
+    <ion-button class="get-bicycle-button" expand="full" (click)="processBicycle()">
         <span *ngIf="!(activeBicycle$|async)">
         Взять велосипед
         </span>

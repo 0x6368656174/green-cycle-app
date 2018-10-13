@@ -23,7 +23,7 @@
 
 <div class="actions">
     <!--<app-button></app-button>-->
-    <ion-button class="get-bicycle-button" expand="full">
+    <ion-button class="get-bicycle-button" expand="full" (click)="processBicycle()">
         <span *ngIf="!(onTheWay$ | async)"> Взять велосипед </span>
         <span *ngIf="onTheWay$ | async"> Завершить поездку </span>
     </ion-button>

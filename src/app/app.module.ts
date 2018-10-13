@@ -26,6 +26,8 @@ import { TripInformationComponent } from './trip-information/trip-information.co
 import { GetBicyclePageComponent } from './get-bicycle-page/get-bicycle-page.component';
 import { GetBicycleSuccessPageComponent } from './get-bicycle-success-page/get-bicycle-success-page.component';
 import { TripInformationPageComponent } from './trip-informaion-page/trip-information-page.component';
+import { GetBicycleHelloPageComponent } from './get-bicycle-hello-page/get-bicycle-hello-page.component';
+import { ReturnBicyclePageComponent } from './return-bicycle-page/return-bicycle-page.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +47,8 @@ import { TripInformationPageComponent } from './trip-informaion-page/trip-inform
     GetBicyclePageComponent,
     GetBicycleSuccessPageComponent,
     TripInformationPageComponent,
+    GetBicycleHelloPageComponent,
+    ReturnBicyclePageComponent,
   ],
   entryComponents: [
     GetBicyclePageComponent,
