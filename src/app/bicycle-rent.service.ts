@@ -66,7 +66,7 @@ export class BicycleRentService {
   }
 
   async onRentalPointFound(rentalPointId: string) {
-    const open = moment().add(30, 's').toDate();
+    const open = moment().add(this.maxInterval, 's').toDate();
     const rentalPointRef = this.firestore.collection('rentalPoints').doc<IRentalPoint>(rentalPointId);
     const rentalPoint: IRentalPoint = await rentalPointRef.valueChanges().pipe(first()).toPromise();
     if (!rentalPoint || rentalPoint.bicycles.length === 0) {
