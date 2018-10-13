@@ -1,0 +1,17 @@
+<div class="info" *ngIf="rentalPoint$ | async as rentalPoint">
+    <div class="left">
+        <div class="address">{{rentalPoint.address}}</div>
+        <div class="info-hint">Ближайший прокат</div>
+    </div>
+    <div class="right">
+        <div class="free">{{rentalPoint.bicycles.length}}</div>
+        <div class="free-hint">Свободно</div>
+    </div>
+</div>
+
+<div class="actions">
+    <!--<app-button></app-button>-->
+    <ion-button class="get-bicycle-button" expand="full">Взять велосипед</ion-button>
+
+    <a class="rental-list" href="/rental-list">Список пунктов проката</a>
+</div>

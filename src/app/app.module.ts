@@ -14,9 +14,14 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HomePageComponent } from './home-page/home-page.component';
+import { IconButtonComponent } from './icon-button/icon-button.component';
 import { RentalPointInfoPageComponent } from './rental-point-info-page/rental-point-info-page.component';
 import { AuthPageComponent } from './auth-page/auth-page.component';
 import { AuthCodePageComponent } from './auth-code-page/auth-code-page.component';
+import { MapComponent } from './map/map.component';
+import { HeaderComponent } from './header/header.component';
+import { NearestRentalPointComponent } from './nearest-rental-point/nearest-rental-point.component';
+import { ButtonComponent } from './button/button.component';
 
 @NgModule({
   declarations: [
@@ -25,12 +30,17 @@ import { AuthCodePageComponent } from './auth-code-page/auth-code-page.component
     RentalPointInfoPageComponent,
     AuthPageComponent,
     AuthCodePageComponent,
+    MapComponent,
+    HeaderComponent,
+    IconButtonComponent,
+    NearestRentalPointComponent,
+    ButtonComponent,
   ],
   entryComponents: [],
   imports: [
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule.enablePersistence(),
+    AngularFirestoreModule,
     AngularFireAuthModule,
     ReactiveFormsModule,
     IonicModule.forRoot(),

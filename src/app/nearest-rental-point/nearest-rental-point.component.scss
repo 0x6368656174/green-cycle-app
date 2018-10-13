@@ -1,0 +1,70 @@
+@import '../variables';
+
+:host {
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 20px;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+}
+
+.address {
+  color: $color-black-1;
+  font-size: 22px;
+}
+
+.info-hint {
+  color: $color-gray-1;
+  font-size: 14px;
+}
+
+.right {
+  margin-left: auto;
+  text-align: center;
+}
+
+.free {
+  color: $color-green-1;
+  font-size: 27px;
+}
+
+.free-hint {
+  color: $color-green-1;
+  font-size: 10px;
+}
+
+.actions {
+  text-align: center;
+  margin-top: 22px;
+}
+
+.get-bicycle-button {
+  width: 100%;
+}
+
+.rental-list {
+  margin-top: 11px;
+  color: $color-green-1;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+
+  &:before {
+    content: '';
+    display: block;
+    width: 10px;
+    height: 7px;
+    mask-image: url('../../assets/icons/icon--menu.svg');
+    mask-size: 10px 7px;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    background-color: $color-green-1;
+    margin-right: 7px;
+  }
+}
