@@ -1,0 +1,28 @@
+@import '../variables';
+
+.cyclist {
+  margin-top: 23px;
+  margin-left: 33px;
+}
+
+.content {
+  width: 235px;
+  margin: auto;
+  margin-top: 44px;
+}
+
+.input {
+  margin-top: 20px;
+}
+
+.button {
+  margin-top: 30px;
+}
+
+.rules {
+  text-align: center;
+  margin-top: 15px;
+  color: $color-gray-1;
+  font-size: 12px;
+  margin-bottom: 20px;
+}

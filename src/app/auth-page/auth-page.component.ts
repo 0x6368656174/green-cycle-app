@@ -13,7 +13,7 @@ import * as firebase from 'firebase/app';
   styleUrls: ['./auth-page.component.scss']
 })
 export class AuthPageComponent implements OnInit {
-  phone = new FormControl('', [Validators.required]);
+  phone = new FormControl('', [Validators.required, Validators.pattern(/\+79\d{9}/)]);
 
   private recaptchaVerifier: ApplicationVerifier;
 

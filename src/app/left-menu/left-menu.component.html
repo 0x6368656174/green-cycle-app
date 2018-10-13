@@ -1,0 +1,21 @@
+<div class="top">
+    <div class="client-info" *ngIf="client$|async">
+        <div class="phone">{{phone$|async}}</div>
+    </div>
+</div>
+
+<nav class="menu">
+    <ul class="menu-list">
+        <li class="menu-list-item"><a class="menu-list-link" [routerLink]="['/']" [routerLinkActive]="'menu-list-link--active'">Карта</a></li>
+        <li class="menu-list-item"><a class="menu-list-link" [routerLink]="['/rental-list']" [routerLinkActive]="'menu-list-link--active'">Пункты проката</a></li>
+        <li class="menu-list-item"><a class="menu-list-link" [routerLink]="['/history']" [routerLinkActive]="'menu-list-link--active'">Поездки</a></li>
+        <li class="menu-list-item"><a class="menu-list-link" [routerLink]="['/price']" [routerLinkActive]="'menu-list-link--active'">Стоимость</a></li>
+        <li class="menu-list-item"><a class="menu-list-link" [routerLink]="['/statistic']" [routerLinkActive]="'menu-list-link--active'">Статистика</a></li>
+        <li class="menu-list-item"><a class="menu-list-link" [routerLink]="['/feedback']" [routerLinkActive]="'menu-list-link--active'">Обратная связь</a></li>
+        <li class="menu-list-item"><a class="menu-list-link" [routerLink]="['/contacts']" [routerLinkActive]="'menu-list-link--active'">Контакты</a></li>
+    </ul>
+</nav>
+
+<div class="card" *ngIf="client$|async as client">
+    Карта оплаты: <span class="card-value">{{client.card}}</span>
+</div>

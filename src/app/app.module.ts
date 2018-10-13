@@ -22,6 +22,7 @@ import { MapComponent } from './map/map.component';
 import { HeaderComponent } from './header/header.component';
 import { NearestRentalPointComponent } from './nearest-rental-point/nearest-rental-point.component';
 import { RentalPointsListLinkComponent } from './rental-points-list-link/rental-points-list-link.component';
+import { LeftMenuComponent } from './left-menu/left-menu.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { RentalPointsListLinkComponent } from './rental-points-list-link/rental-
     IconButtonComponent,
     NearestRentalPointComponent,
     RentalPointsListLinkComponent,
+    LeftMenuComponent,
   ],
   entryComponents: [],
   imports: [

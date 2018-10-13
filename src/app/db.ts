@@ -14,6 +14,7 @@ export interface IBicycle {
 
 export interface IClient {
   readonly phone: number;
+  readonly card: string;
 }
 
 export interface IActiveBicycle {

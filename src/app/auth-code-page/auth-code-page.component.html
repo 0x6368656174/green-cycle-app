@@ -1,20 +1,21 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>
-      Home
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-  <ion-item>
-    <ion-label position="floating">Введите код</ion-label>
-    <ion-input type="tel" [formControl]="code"></ion-input>
-  </ion-item>
+  <img class="cyclist" src="../../assets/cyclist.png" alt="Велосипедист">
 
-  <ion-button (click)="submit()">SignIn</ion-button>
+  <div class="content">
+    <img class="logo" src="../../assets/logo--big.svg" alt="Крути педали">
+
+    <ion-item class="input">
+      <ion-label position="floating">Введите код из СМС</ion-label>
+      <ion-input type="number" [formControl]="code"></ion-input>
+    </ion-item>
+
+    <ion-button class="button" expand="full" (click)="submit()" [disabled]="!code.valid">Зарегистрироваться</ion-button>
+
+    <div class="rules">
+      Нажимая кнопку “Зарегистрироваться“, я принимаю условия <a class="rules-link">Пользовательского соглашения</a>.
+    </div>
+
+    <div id="recaptcha-verifier"></div>
+  </div>
 </ion-content>
 
