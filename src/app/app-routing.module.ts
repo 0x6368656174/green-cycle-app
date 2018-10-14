@@ -15,20 +15,20 @@ const routes: Routes = [
     path: '',
     canActivate: [AuthGuard],
     children: [
-      { path: '', component: HomePageComponent, },
+      { path: '', component: HomePageComponent },
       { path: 'get-bicycle', component: GetBicycleHelloPageComponent },
       { path: 'return-bicycle', component: ReturnBicyclePageComponent },
-      { path: 'rental-point/:id', component: RentalPointInfoPageComponent, },
-      { path: 'trip-information', component: TripInformationPageComponent, },
+      { path: 'rental-point/:id', component: RentalPointInfoPageComponent },
+      { path: 'trip-information', component: TripInformationPageComponent },
     ],
   },
-  { path: 'auth', component: AuthPageComponent, canActivate: [NotAuthGuard], },
-  { path: 'auth-code/:id', component: AuthCodePageComponent, canActivate: [NotAuthGuard], },
-  { path: '**', redirectTo: ''},
+  { path: 'auth', component: AuthPageComponent, canActivate: [NotAuthGuard] },
+  { path: 'auth-code/:id', component: AuthCodePageComponent, canActivate: [NotAuthGuard] },
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

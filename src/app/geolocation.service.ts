@@ -7,20 +7,20 @@ interface IGeoCoordinate {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GeolocationService {
   geolocation = new BehaviorSubject<IGeoCoordinate | null>(null);
 
   constructor() {
     navigator.geolocation.watchPosition(
-      (position) => {
+      position => {
         this.geolocation.next({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
         });
       },
-      (v) => console.error('error', v),
+      v => console.error('error', v),
       { timeout: 30000 },
     );
   }

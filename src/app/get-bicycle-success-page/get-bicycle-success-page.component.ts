@@ -5,13 +5,12 @@ import { ModalController } from '@ionic/angular';
 @Component({
   selector: 'app-get-bicycle-success-page',
   templateUrl: './get-bicycle-success-page.component.html',
-  styleUrls: ['./get-bicycle-success-page.component.scss']
+  styleUrls: ['./get-bicycle-success-page.component.scss'],
 })
 export class GetBicycleSuccessPageComponent implements OnInit {
-  constructor(private router: Router, private modalController: ModalController) { }
+  constructor(private router: Router, private modalController: ModalController) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   toHome() {
     this.modalController.dismiss();

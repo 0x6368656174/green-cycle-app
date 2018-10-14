@@ -8,9 +8,8 @@ describe('ReturnBicycleSuccessPageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ReturnBicycleSuccessPageComponent ]
-    })
-    .compileComponents();
+      declarations: [ReturnBicycleSuccessPageComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

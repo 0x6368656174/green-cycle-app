@@ -7,24 +7,24 @@
 }
 
 .content {
+  padding-bottom: 20px;
   padding-left: 25px;
   padding-right: 25px;
-  padding-bottom: 20px;
 }
 
 .back-link {
+  align-items: center;
   color: $color-green-1;
   display: flex;
-  align-items: center;
   margin-top: 25px;
 
-  &:before {
+  &::before {
+    background-image: url('../../assets/arrow--left.svg');
     content: '';
     display: block;
-    width: 5px;
     height: 8px;
-    background-image: url('../../assets/arrow--left.svg');
     margin-right: 8px;
+    width: 5px;
   }
 }
 
@@ -39,8 +39,8 @@
 }
 
 .amount-row {
-  display: flex;
   align-items: center;
+  display: flex;
   margin-top: 30px;
 }
 
@@ -49,10 +49,10 @@
 }
 
 .amount-label {
-  color: $color-black-1;
-  font-size: 18px;
-  display: flex;
   align-items: center;
+  color: $color-black-1;
+  display: flex;
+  font-size: 18px;
 }
 
 .amount-value {
@@ -68,8 +68,8 @@
 
 .link {
   color: $color-green-1;
-  font-size: 12px;
   display: block;
+  font-size: 12px;
   margin-top: 15px;
   text-align: center;
 }

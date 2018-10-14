@@ -8,13 +8,13 @@ import { formatPhone } from '../utils';
 @Component({
   selector: 'app-left-menu',
   templateUrl: './left-menu.component.html',
-  styleUrls: ['./left-menu.component.scss']
+  styleUrls: ['./left-menu.component.scss'],
 })
 export class LeftMenuComponent implements OnInit {
   client$: Observable<IClient | null>;
   phone$: Observable<string>;
 
-  constructor(private auth: AuthService) { }
+  constructor(private auth: AuthService) {}
 
   ngOnInit() {
     this.client$ = this.auth.client;

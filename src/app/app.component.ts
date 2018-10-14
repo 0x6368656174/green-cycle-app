@@ -7,20 +7,20 @@ import { BicycleRentService } from './bicycle-rent.service';
 
 @Component({
   selector: 'app-root',
-  templateUrl: 'app.component.html'
+  templateUrl: 'app.component.html',
 })
 export class AppComponent {
   public appPages = [
     {
       title: 'Home',
       url: '/home',
-      icon: 'home'
+      icon: 'home',
     },
     {
       title: 'Auth',
       url: '/auth',
-      icon: 'list'
-    }
+      icon: 'list',
+    },
   ];
 
   constructor(

@@ -1,15 +1,15 @@
-@import "../variables";
+@import '../variables';
 
 :host {
-  display: flex;
   align-items: center;
-  justify-content: space-between;
   background-color: $color-green-1;
   border-radius: 5px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
   padding-bottom: 20px;
   padding-right: 20px;
+  padding-top: 20px;
 }
 
 .value {
@@ -41,10 +41,10 @@
 }
 
 .more {
-  border-style: none;
   background-color: transparent;
   background-image: url('../../assets/button--next.svg');
-  width: 32px;
-  min-width: 32px;
+  border-style: none;
   height: 32px;
+  min-width: 32px;
+  width: 32px;
 }

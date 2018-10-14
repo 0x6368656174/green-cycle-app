@@ -24,10 +24,9 @@ export class HomePageComponent implements OnInit, OnDestroy {
           return of([]);
         }
 
-        return  this.firestore.collection<IActiveBicycle>(
-          'activeBicycles',
-          ref => ref.where('client', '==', clientRef),
-        ).valueChanges();
+        return this.firestore
+          .collection<IActiveBicycle>('activeBicycles', ref => ref.where('client', '==', clientRef))
+          .valueChanges();
       }),
       map(bicycles => {
         if (bicycles.length > 0) {
@@ -38,11 +37,8 @@ export class HomePageComponent implements OnInit, OnDestroy {
       }),
     );
 
-    this.onTheWay$ = this.activeBicycle$.pipe(
-      map(bicycle => !!bicycle),
-    );
+    this.onTheWay$ = this.activeBicycle$.pipe(map(bicycle => !!bicycle));
   }
 
-  ngOnDestroy(): void {
-  }
+  ngOnDestroy(): void {}
 }

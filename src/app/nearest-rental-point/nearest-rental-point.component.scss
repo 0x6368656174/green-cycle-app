@@ -15,16 +15,16 @@
 }
 
 .info {
-  display: flex;
   align-items: center;
+  display: flex;
 }
 
 .address {
+  align-items: center;
   color: $color-black-1;
+  display: flex;
   font-size: 22px;
   height: 30px;
-  display: flex;
-  align-items: center;
 }
 
 .loader {
@@ -32,9 +32,9 @@
 }
 
 .loader.animated-background {
+  border-radius: 2px;
   display: block;
   height: 4px;
-  border-radius: 2px;
   width: 200px;
 }
 
@@ -49,8 +49,8 @@
 }
 
 .free {
-  display: inline-block;
   color: $color-green-1;
+  display: inline-block;
   font-size: 27px;
 }
 
@@ -60,12 +60,12 @@
 }
 
 .actions {
-  text-align: center;
   margin-top: 14px;
+  text-align: center;
 }
 
 .get-bicycle-button {
-  --height: 40px!important;
+  --height: 40px !important;
 }
 
 .rental-list {

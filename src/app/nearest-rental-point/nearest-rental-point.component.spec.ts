@@ -8,9 +8,8 @@ describe('NearestRentalPointComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NearestRentalPointComponent ]
-    })
-    .compileComponents();
+      declarations: [NearestRentalPointComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

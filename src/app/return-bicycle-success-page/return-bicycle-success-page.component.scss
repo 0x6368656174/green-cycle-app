@@ -1,15 +1,15 @@
 @import '../variables';
 
 :host {
+  background-color: #fff;
   display: flex;
   flex-direction: column;
-  background-color: #fff;
 }
 
 .content {
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
   min-height: 100%;
 }
 
@@ -30,18 +30,18 @@
 }
 
 .bottom {
+  align-items: center;
   background-color: #f4f4f4;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding-top: 37px;
   height: 219px;
+  padding-top: 37px;
   width: 100%;
 }
 
 .amount-row {
-  display: flex;
   align-items: center;
+  display: flex;
   width: 240px;
 }
 
@@ -50,10 +50,10 @@
 }
 
 .amount-label {
-  color: $color-black-1;
-  font-size: 18px;
-  display: flex;
   align-items: center;
+  color: $color-black-1;
+  display: flex;
+  font-size: 18px;
 }
 
 .amount-value {
@@ -63,8 +63,8 @@
 }
 
 .button-container {
-  width: 240px;
   margin-top: 25px;
+  width: 240px;
 }
 
 .button {
@@ -73,8 +73,8 @@
 
 .link {
   color: $color-green-1;
-  font-size: 12px;
   display: block;
+  font-size: 12px;
   margin-top: 15px;
   text-align: center;
 }

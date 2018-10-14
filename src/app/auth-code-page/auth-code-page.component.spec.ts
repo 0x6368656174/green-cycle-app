@@ -8,9 +8,8 @@ describe('AuthCodePageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AuthCodePageComponent ]
-    })
-    .compileComponents();
+      declarations: [AuthCodePageComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

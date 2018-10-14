@@ -8,13 +8,17 @@ import { map, switchMap, tap } from 'rxjs/operators';
 import { IClient } from './db';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   client: Observable<IClient | null>;
   clientRef: Observable<DocumentReference | null>;
 
-  constructor(private afAuth: AngularFireAuth, private firestore: AngularFirestore, private splashScreen: SplashScreen) {
+  constructor(
+    private afAuth: AngularFireAuth,
+    private firestore: AngularFirestore,
+    private splashScreen: SplashScreen,
+  ) {
     this.clientRef = this.afAuth.user.pipe(
       map(user => {
         if (!user) {
@@ -34,7 +38,10 @@ export class AuthService {
           return of(null);
         }
 
-        return this.firestore.collection('clients').doc<IClient>(ref.id).valueChanges();
+        return this.firestore
+          .collection('clients')
+          .doc<IClient>(ref.id)
+          .valueChanges();
       }),
     );
   }

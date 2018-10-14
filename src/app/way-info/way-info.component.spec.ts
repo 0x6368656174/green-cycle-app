@@ -8,9 +8,8 @@ describe('WayInfoComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WayInfoComponent ]
-    })
-    .compileComponents();
+      declarations: [WayInfoComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

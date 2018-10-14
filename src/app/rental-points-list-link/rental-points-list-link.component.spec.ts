@@ -8,9 +8,8 @@ describe('RentalPointsListLinkComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RentalPointsListLinkComponent ]
-    })
-    .compileComponents();
+      declarations: [RentalPointsListLinkComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

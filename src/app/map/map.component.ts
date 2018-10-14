@@ -1,4 +1,14 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { BehaviorSubject, combineLatest, of, Subject } from 'rxjs';
@@ -41,53 +51,71 @@ import '@firebase/firestore';
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
-  styleUrls: ['./map.component.scss']
+  styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
-  @Input() set rentalPointId(id: string) {
+  @Input()
+  set rentalPointId(id: string) {
     this.rentalPointId$.next(id);
   }
   private rentalPointId$ = new BehaviorSubject<string | undefined>(undefined);
 
-  @Output() nearestRentalPoint = new EventEmitter<string>();
+  @Output()
+  nearestRentalPoint = new EventEmitter<string>();
 
-  @ViewChild('map') private mapElement: ElementRef<HTMLDivElement>;
+  @ViewChild('map')
+  private mapElement: ElementRef<HTMLDivElement>;
 
   private map;
   private rentalPointsMarkers = {};
   private ngUnsubscribe = new Subject();
   private myMarker;
 
-  constructor(private firestore: AngularFirestore, private router: Router, private geolocation: GeolocationService, private auth: AuthService) { }
+  constructor(
+    private firestore: AngularFirestore,
+    private router: Router,
+    private geolocation: GeolocationService,
+    private auth: AuthService,
+  ) {}
 
   ngOnInit(): void {
     this.map = DG.map(this.mapElement.nativeElement, {
-      'center': [50.263931, 127.531805],
-      'zoom': 13,
-      'zoomControl': false,
-      'fullscreenControl': false,
+      center: [50.263931, 127.531805],
+      zoom: 13,
+      zoomControl: false,
+      fullscreenControl: false,
     });
 
-    const rentalPointsChanges$ = this.rentalPointId$.pipe(
-      switchMap(id => {
-        if (id === undefined) {
-          return this.firestore.collection<IRentalPoint>('rentalPoints').stateChanges();
-        }
+    const rentalPointsChanges$ = this.rentalPointId$
+      .pipe(
+        switchMap(id => {
+          if (id === undefined) {
+            return this.firestore.collection<IRentalPoint>('rentalPoints').stateChanges();
+          }
 
-        return this.firestore.collection<IRentalPoint>(
-          'rentalPoints',
-          ref => ref.where(firebase.firestore.FieldPath.documentId(), '==', id),
-        ).stateChanges();
-      })
-    ).pipe(
-      takeUntil(this.ngUnsubscribe),
-    );
+          return this.firestore
+            .collection<IRentalPoint>('rentalPoints', ref =>
+              ref.where(firebase.firestore.FieldPath.documentId(), '==', id),
+            )
+            .stateChanges();
+        }),
+      )
+      .pipe(takeUntil(this.ngUnsubscribe));
 
-    this.rentalPointId$.pipe(
-      filter((id): id is string => !!id),
-      switchMap(id => this.firestore.collection('rentalPoints').doc<IRentalPoint>(id).valueChanges()),
-      takeUntil(this.ngUnsubscribe),
-    ).subscribe(point => this.map.panTo(DG.latLng(point.location.latitude, point.location.longitude)));
+    this.rentalPointId$
+      .pipe(
+        filter((id): id is string => !!id),
+        switchMap(id =>
+          this.firestore
+            .collection('rentalPoints')
+            .doc<IRentalPoint>(id)
+            .valueChanges(),
+        ),
+        takeUntil(this.ngUnsubscribe),
+      )
+      .subscribe(point =>
+        this.map.panTo(DG.latLng(point.location.latitude, point.location.longitude)),
+      );
 
     rentalPointsChanges$.subscribe(actions => {
       actions.forEach(action => {
@@ -95,10 +123,9 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
         if (action.type === 'added') {
           const dbPoint = action.payload.doc.data();
 
-          const marker = DG.marker(
-            [dbPoint.location.latitude, dbPoint.location.longitude],
-            {icon: this.getMarker((dbPoint.bicycles || []).length)},
-          ).addTo(this.map);
+          const marker = DG.marker([dbPoint.location.latitude, dbPoint.location.longitude], {
+            icon: this.getMarker((dbPoint.bicycles || []).length),
+          }).addTo(this.map);
           marker.addEventListener('click', () => {
             this.router.navigate(['/rental-point', id]);
           });
@@ -135,23 +162,26 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
       shadowUrl: undefined,
       shadowRetinaUrl: undefined,
       shadowSize: [68, 95],
-      shadowAnchor: [22, 94]
+      shadowAnchor: [22, 94],
     });
 
     // Найдем точки проката
-    const rentalPointsPositions$ = this.firestore.collection<IRentalPoint>('rentalPoints').snapshotChanges().pipe(
-      takeUntil(this.ngUnsubscribe),
-      map(changes => {
-        return changes.map(change => {
-          const location = change.payload.doc.data().location;
-          return {
-            id: change.payload.doc.id,
-            latitude: location.latitude,
-            longitude: location.longitude,
-          };
-        });
-      }),
-    );
+    const rentalPointsPositions$ = this.firestore
+      .collection<IRentalPoint>('rentalPoints')
+      .snapshotChanges()
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        map(changes => {
+          return changes.map(change => {
+            const location = change.payload.doc.data().location;
+            return {
+              id: change.payload.doc.id,
+              latitude: location.latitude,
+              longitude: location.longitude,
+            };
+          });
+        }),
+      );
 
     // Найдем мой активный велосипед
     const activeBicycle$ = this.auth.clientRef.pipe(
@@ -160,10 +190,9 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
           return of([]);
         }
 
-        return  this.firestore.collection<IActiveBicycle>(
-          'activeBicycles',
-          ref => ref.where('client', '==', clientRef),
-        ).valueChanges();
+        return this.firestore
+          .collection<IActiveBicycle>('activeBicycles', ref => ref.where('client', '==', clientRef))
+          .valueChanges();
       }),
       map(bicycles => {
         if (bicycles.length > 0) {
@@ -190,27 +219,26 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
     );
 
     // Установим мой маркер
-    myLocation$.pipe(
-      takeUntil(this.ngUnsubscribe),
-    ).subscribe(myLocation => {
+    myLocation$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(myLocation => {
       if (!this.myMarker) {
-        this.myMarker = DG.marker(
-          [myLocation.latitude, myLocation.longitude],
-          {icon: myIcon},
-        ).addTo(this.map);
+        this.myMarker = DG.marker([myLocation.latitude, myLocation.longitude], {
+          icon: myIcon,
+        }).addTo(this.map);
       } else {
         this.myMarker.setLatLng(DG.latLng(myLocation.latitude, myLocation.longitude));
       }
     });
 
     // Вернем ближайший прокат
-    combineLatest(rentalPointsPositions$, myLocation$).pipe(
-      map(([rentalPointsPositions, myLocation]) => {
-        const nearest: any = findNearest(myLocation, rentalPointsPositions);
-        return rentalPointsPositions[nearest.key];
-      }),
-      distinctUntilChanged(isEqual),
-    ).subscribe(point => this.nearestRentalPoint.emit(point.id));
+    combineLatest(rentalPointsPositions$, myLocation$)
+      .pipe(
+        map(([rentalPointsPositions, myLocation]) => {
+          const nearest: any = findNearest(myLocation, rentalPointsPositions);
+          return rentalPointsPositions[nearest.key];
+        }),
+        distinctUntilChanged(isEqual),
+      )
+      .subscribe(point => this.nearestRentalPoint.emit(point.id));
   }
 
   ngAfterViewInit(): void {
@@ -225,31 +253,81 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
   private getMarker(num: number) {
     let icon;
     switch (num) {
-      case 0: icon = marker0; break;
-      case 1: icon = marker1; break;
-      case 2: icon = marker2; break;
-      case 3: icon = marker3; break;
-      case 4: icon = marker4; break;
-      case 5: icon = marker5; break;
-      case 6: icon = marker6; break;
-      case 7: icon = marker7; break;
-      case 8: icon = marker8; break;
-      case 9: icon = marker9; break;
-      case 10: icon = marker10; break;
-      case 11: icon = marker11; break;
-      case 12: icon = marker12; break;
-      case 13: icon = marker13; break;
-      case 14: icon = marker14; break;
-      case 15: icon = marker15; break;
-      case 16: icon = marker16; break;
-      case 17: icon = marker17; break;
-      case 18: icon = marker18; break;
-      case 19: icon = marker19; break;
-      case 20: icon = marker20; break;
-      case 21: icon = marker21; break;
-      case 22: icon = marker22; break;
-      case 23: icon = marker23; break;
-      case 24: icon = marker24; break;
+      case 0:
+        icon = marker0;
+        break;
+      case 1:
+        icon = marker1;
+        break;
+      case 2:
+        icon = marker2;
+        break;
+      case 3:
+        icon = marker3;
+        break;
+      case 4:
+        icon = marker4;
+        break;
+      case 5:
+        icon = marker5;
+        break;
+      case 6:
+        icon = marker6;
+        break;
+      case 7:
+        icon = marker7;
+        break;
+      case 8:
+        icon = marker8;
+        break;
+      case 9:
+        icon = marker9;
+        break;
+      case 10:
+        icon = marker10;
+        break;
+      case 11:
+        icon = marker11;
+        break;
+      case 12:
+        icon = marker12;
+        break;
+      case 13:
+        icon = marker13;
+        break;
+      case 14:
+        icon = marker14;
+        break;
+      case 15:
+        icon = marker15;
+        break;
+      case 16:
+        icon = marker16;
+        break;
+      case 17:
+        icon = marker17;
+        break;
+      case 18:
+        icon = marker18;
+        break;
+      case 19:
+        icon = marker19;
+        break;
+      case 20:
+        icon = marker20;
+        break;
+      case 21:
+        icon = marker21;
+        break;
+      case 22:
+        icon = marker22;
+        break;
+      case 23:
+        icon = marker23;
+        break;
+      case 24:
+        icon = marker24;
+        break;
     }
 
     return DG.icon({
@@ -261,7 +339,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
       shadowUrl: undefined,
       shadowRetinaUrl: undefined,
       shadowSize: [68, 95],
-      shadowAnchor: [22, 94]
+      shadowAnchor: [22, 94],
     });
   }
 

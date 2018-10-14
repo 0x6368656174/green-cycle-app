@@ -10,7 +10,7 @@ import { calculateAmount } from '../price';
 @Component({
   selector: 'app-way-info',
   templateUrl: './way-info.component.html',
-  styleUrls: ['./way-info.component.scss']
+  styleUrls: ['./way-info.component.scss'],
 })
 export class WayInfoComponent implements OnInit {
   @Input()
@@ -22,7 +22,7 @@ export class WayInfoComponent implements OnInit {
   mileage$: Observable<string>;
   amount$: Observable<string>;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {}
 
   ngOnInit() {
     const currentTime$ = interval(60000).pipe(
@@ -36,7 +36,9 @@ export class WayInfoComponent implements OnInit {
           return '0 мин';
         }
 
-        const duration = moment.duration(currentTime.diff(moment(bicycle.rentalStart.toDate()))).clone();
+        const duration = moment
+          .duration(currentTime.diff(moment(bicycle.rentalStart.toDate())))
+          .clone();
 
         let durationString = '';
         if (duration.asDays() >= 1) {
@@ -53,12 +55,10 @@ export class WayInfoComponent implements OnInit {
         }
 
         return durationString;
-      })
+      }),
     );
 
-    this.mileage$ = this.activeBicycle$.pipe(
-      map(bicycle => bicycle.mileage.toFixed(2)),
-    );
+    this.mileage$ = this.activeBicycle$.pipe(map(bicycle => bicycle.mileage.toFixed(2)));
 
     this.amount$ = combineLatest(currentTime$, this.activeBicycle$).pipe(
       map(([currentTime, bicycle]) => {

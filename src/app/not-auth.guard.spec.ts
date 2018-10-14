@@ -5,7 +5,7 @@ import { NotAuthGuard } from './not-auth.guard';
 describe('NotAuthGuard', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [NotAuthGuard]
+      providers: [NotAuthGuard],
     });
   });
 

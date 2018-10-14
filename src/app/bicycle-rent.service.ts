@@ -23,10 +23,10 @@ export class BicycleRentService {
   newRentalPointId = new Subject<string>();
 
   constructor(
-              private modalController: ModalController,
-              private firestore: AngularFirestore,
-              private auth: AuthService,
-              private geolocation: GeolocationService,
+    private modalController: ModalController,
+    private firestore: AngularFirestore,
+    private auth: AuthService,
+    private geolocation: GeolocationService,
   ) {
     auth.client.subscribe(async client => {
       if (!client.nfc) {
@@ -36,9 +36,12 @@ export class BicycleRentService {
       const nfc = client.nfc;
       const clientRef = await this.auth.clientRef.pipe(first()).toPromise();
 
-      await this.firestore.collection('clients').doc<IClient>(clientRef.id).update({
-        nfc: null,
-      });
+      await this.firestore
+        .collection('clients')
+        .doc<IClient>(clientRef.id)
+        .update({
+          nfc: null,
+        });
 
       this.onRentalPointFound(nfc);
     });
@@ -66,9 +69,16 @@ export class BicycleRentService {
   }
 
   async onRentalPointFound(rentalPointId: string) {
-    const open = moment().add(this.maxInterval, 's').toDate();
-    const rentalPointRef = this.firestore.collection('rentalPoints').doc<IRentalPoint>(rentalPointId);
-    const rentalPoint: IRentalPoint = await rentalPointRef.valueChanges().pipe(first()).toPromise();
+    const open = moment()
+      .add(this.maxInterval, 's')
+      .toDate();
+    const rentalPointRef = this.firestore
+      .collection('rentalPoints')
+      .doc<IRentalPoint>(rentalPointId);
+    const rentalPoint: IRentalPoint = await rentalPointRef
+      .valueChanges()
+      .pipe(first())
+      .toPromise();
     if (!rentalPoint || rentalPoint.bicycles.length === 0) {
       console.log(`Not found rental point id = ${rentalPointId}`);
       return;
@@ -78,10 +88,8 @@ export class BicycleRentService {
     const location = await this.geolocation.geolocation.pipe(first()).toPromise();
 
     // Попробуем найти уже активный велосипед
-    const activeBicycle = await this.firestore.collection<IActiveBicycle>(
-      'activeBicycles',
-      ref => ref.where('client', '==', clientRef),
-    )
+    const activeBicycle = await this.firestore
+      .collection<IActiveBicycle>('activeBicycles', ref => ref.where('client', '==', clientRef))
       .snapshotChanges()
       .pipe(
         map(changes => {
@@ -95,12 +103,13 @@ export class BicycleRentService {
           return null;
         }),
         first(),
-      ).toPromise();
-
+      )
+      .toPromise();
 
     if (activeBicycle) {
       // МЫ УЖЕ В ДОРОГЕ, СТАВИМ ВЕЛОСИПЕД
-      const bicycleRef = this.firestore.collection('bicycles').doc<IActiveBicycle>(activeBicycle.id).ref;
+      const bicycleRef = this.firestore.collection('bicycles').doc<IActiveBicycle>(activeBicycle.id)
+        .ref;
 
       // Проверим, что в точке проката есть велики
       if (rentalPoint.bicycles.length === 0) {
@@ -121,7 +130,10 @@ export class BicycleRentService {
       });
 
       // Удаляем активный велосипед
-      await this.firestore.collection('activeBicycles').doc(bicycleRef.id).delete();
+      await this.firestore
+        .collection('activeBicycles')
+        .doc(bicycleRef.id)
+        .delete();
 
       const currentTime = moment();
       const rentalStart = moment(activeBicycle.rentalStart.toDate());
@@ -134,7 +146,7 @@ export class BicycleRentService {
           amount: calculateAmount(rentalStart, currentTime),
           duration,
           mileage: activeBicycle.mileage,
-        }
+        },
       });
       await rentalBicycleSuccessModal.present();
     } else {
@@ -168,15 +180,16 @@ export class BicycleRentService {
       });
 
       // Добавим активный велосипед
-      await this.firestore.collection('activeBicycles').doc(bicycleRef.id).set({
-        client: clientRef,
-        location,
-        mileage: 0,
-        rentalStart: firebase.firestore.FieldValue.serverTimestamp(),
-        route: [
+      await this.firestore
+        .collection('activeBicycles')
+        .doc(bicycleRef.id)
+        .set({
+          client: clientRef,
           location,
-        ],
-      });
+          mileage: 0,
+          rentalStart: firebase.firestore.FieldValue.serverTimestamp(),
+          route: [location],
+        });
 
       // Покажем диалоговое окно
       const getBicycleSuccessModal = await this.modalController.create({

@@ -8,9 +8,8 @@ describe('GetBicycleHelloPageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GetBicycleHelloPageComponent ]
-    })
-    .compileComponents();
+      declarations: [GetBicycleHelloPageComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

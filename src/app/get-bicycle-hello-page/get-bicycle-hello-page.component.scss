@@ -7,33 +7,33 @@
 }
 
 .content {
-  padding-left: 25px;
-  padding-right: 25px;
-  padding-bottom: 20px;
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
   min-height: 100%;
+  padding-bottom: 20px;
+  padding-left: 25px;
+  padding-right: 25px;
 }
 
 .back-link-container {
-  margin-top: 30px;
   margin-bottom: auto;
+  margin-top: 30px;
   width: 100%;
 }
 
 .back-link {
+  align-items: center;
   color: $color-green-1;
   display: flex;
-  align-items: center;
 
-  &:before {
+  &::before {
+    background-image: url('../../assets/arrow--left.svg');
     content: '';
     display: block;
-    width: 5px;
     height: 8px;
-    background-image: url('../../assets/arrow--left.svg');
     margin-right: 8px;
+    width: 5px;
   }
 }
 
@@ -50,33 +50,33 @@
 .red-text {
   color: $color-red-1;
   font-size: 18px;
-  text-align: center;
   margin-top: 73px;
+  text-align: center;
 }
 
 .info {
-  width: 100%;
-  max-width: 295px;
-  background-color: $color-red-1;
-  height: 40px;
-  display: flex;
   align-items: center;
-  justify-content: center;
+  background-color: $color-red-1;
   color: #fff;
+  display: flex;
   font-size: 16px;
+  height: 40px;
+  justify-content: center;
   margin-top: 20px;
+  max-width: 295px;
+  width: 100%;
 }
 
 .second-text {
+  align-items: center;
   color: $color-black-1;
   font-size: 14px;
   margin-top: 15px;
-  align-items: center;
 }
 
 .bottom {
-  margin-top: auto;
   margin-bottom: 40px;
+  margin-top: auto;
   text-align: center;
 }
 

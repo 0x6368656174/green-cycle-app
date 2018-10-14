@@ -7,10 +7,11 @@ import { pluralize } from '../pluralize';
 @Component({
   selector: 'app-trip-information',
   templateUrl: './trip-information.component.html',
-  styleUrls: ['./trip-information.component.scss']
+  styleUrls: ['./trip-information.component.scss'],
 })
 export class TripInformationComponent implements OnInit {
-  @Input() border = true;
+  @Input()
+  border = true;
 
   mileage$ = new BehaviorSubject(0);
   @Input()
@@ -29,16 +30,12 @@ export class TripInformationComponent implements OnInit {
   ccal$: Observable<string>;
   co2$: Observable<string>;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
-    this.mileageStr$ = this.mileage$.pipe(
-      map(mileage => mileage.toFixed(2)),
-    );
+    this.mileageStr$ = this.mileage$.pipe(map(mileage => mileage.toFixed(2)));
 
-    const notNulDuration$ = this.duration$.pipe(
-      filter(v => !!v),
-    );
+    const notNulDuration$ = this.duration$.pipe(filter(v => !!v));
 
     this.durationStr$ = notNulDuration$.pipe(
       filter(v => !!v),
@@ -62,7 +59,7 @@ export class TripInformationComponent implements OnInit {
         }
 
         return '0';
-      })
+      }),
     );
 
     this.durationUnitStr$ = combineLatest(notNulDuration$, this.durationStr$).pipe(
@@ -80,13 +77,8 @@ export class TripInformationComponent implements OnInit {
       }),
     );
 
-    this.ccal$ = notNulDuration$.pipe(
-      map(duration => (duration.asHours() * 500).toFixed(0))
-    );
+    this.ccal$ = notNulDuration$.pipe(map(duration => (duration.asHours() * 500).toFixed(0)));
 
-    this.co2$ = notNulDuration$.pipe(
-      map(duration => (duration.asHours() * 1.13).toFixed(2))
-    );
+    this.co2$ = notNulDuration$.pipe(map(duration => (duration.asHours() * 1.13).toFixed(2)));
   }
-
 }

@@ -5,14 +5,15 @@ import { first, map, tap } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NotAuthGuard implements CanActivate {
   constructor(private auth: AuthService, private router: Router) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+    state: RouterStateSnapshot,
+  ): Observable<boolean> | Promise<boolean> | boolean {
     return this.auth.client.pipe(
       map(user => !!user),
       first(),

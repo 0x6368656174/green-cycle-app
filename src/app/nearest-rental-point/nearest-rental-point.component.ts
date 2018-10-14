@@ -8,27 +8,32 @@ import { IRentalPoint } from '../db';
 @Component({
   selector: 'app-nearest-rental-point',
   templateUrl: './nearest-rental-point.component.html',
-  styleUrls: ['./nearest-rental-point.component.scss']
+  styleUrls: ['./nearest-rental-point.component.scss'],
 })
 export class NearestRentalPointComponent implements OnInit {
   private id$ = new Subject<string>();
-  @Input() set id(id: string) {
+  @Input()
+  set id(id: string) {
     this.id$.next(id);
   }
 
   onTheWay$ = new BehaviorSubject<boolean>(false);
-  @Input() set onTheWay(onTheWay: boolean) {
+  @Input()
+  set onTheWay(onTheWay: boolean) {
     this.onTheWay$.next(onTheWay);
   }
 
   rentalPoint$: Observable<IRentalPoint>;
 
-  constructor(private firestore: AngularFirestore, private router: Router) { }
+  constructor(private firestore: AngularFirestore, private router: Router) {}
 
   ngOnInit() {
     this.rentalPoint$ = this.id$.pipe(
       switchMap(id => {
-        return this.firestore.collection('rentalPoints').doc<IRentalPoint>(id).valueChanges();
+        return this.firestore
+          .collection('rentalPoints')
+          .doc<IRentalPoint>(id)
+          .valueChanges();
       }),
     );
   }

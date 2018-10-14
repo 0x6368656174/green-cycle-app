@@ -5,13 +5,14 @@ import { map, startWith, takeWhile } from 'rxjs/operators';
 @Component({
   selector: 'app-get-bicycle-page',
   templateUrl: './get-bicycle-page.component.html',
-  styleUrls: ['./get-bicycle-page.component.scss']
+  styleUrls: ['./get-bicycle-page.component.scss'],
 })
 export class GetBicyclePageComponent implements OnInit {
-  @Input() maxInterval = 5;
+  @Input()
+  maxInterval = 5;
   interval$: Observable<string>;
 
-  constructor() { }
+  constructor() {}
 
   async ngOnInit() {
     this.interval$ = interval(1000).pipe(
@@ -24,8 +25,7 @@ export class GetBicyclePageComponent implements OnInit {
         }
 
         return v.toString();
-      })
+      }),
     );
   }
-
 }

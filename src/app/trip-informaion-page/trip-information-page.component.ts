@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { combineLatest, interval, Observable, of } from 'rxjs';
@@ -9,18 +9,22 @@ import { IActiveBicycle } from '../db';
 import * as moment from 'moment';
 import { calculateAmount } from '../price';
 
-
 @Component({
   selector: 'app-trip-information-page',
   templateUrl: './trip-information-page.component.html',
-  styleUrls: ['./trip-information-page.component.scss']
+  styleUrls: ['./trip-information-page.component.scss'],
 })
 export class TripInformationPageComponent implements OnInit {
   amount$: Observable<string>;
   mileage$: Observable<number>;
   duration$: Observable<moment.Duration>;
 
-  constructor(private firestore: AngularFirestore, private auth: AuthService, private location: Location, private router: Router) { }
+  constructor(
+    private firestore: AngularFirestore,
+    private auth: AuthService,
+    private location: Location,
+    private router: Router,
+  ) {}
 
   ngOnInit() {
     const activeBicycle$ = this.auth.clientRef.pipe(
@@ -29,10 +33,9 @@ export class TripInformationPageComponent implements OnInit {
           return of([]);
         }
 
-        return  this.firestore.collection<IActiveBicycle>(
-          'activeBicycles',
-          ref => ref.where('client', '==', clientRef),
-        ).valueChanges();
+        return this.firestore
+          .collection<IActiveBicycle>('activeBicycles', ref => ref.where('client', '==', clientRef))
+          .valueChanges();
       }),
       map(bicycles => {
         if (bicycles.length > 0) {
@@ -52,12 +55,10 @@ export class TripInformationPageComponent implements OnInit {
     this.duration$ = combineLatest(currentTime$, activeBicycle$).pipe(
       map(([currentTime, bicycle]) => {
         return moment.duration(currentTime.diff(moment(bicycle.rentalStart.toDate())));
-      })
+      }),
     );
 
-    this.mileage$ = activeBicycle$.pipe(
-      map(bicycle => bicycle.mileage.toFixed(2)),
-    );
+    this.mileage$ = activeBicycle$.pipe(map(bicycle => bicycle.mileage.toFixed(2)));
 
     this.amount$ = combineLatest(currentTime$, activeBicycle$).pipe(
       map(([currentTime, bicycle]) => {
